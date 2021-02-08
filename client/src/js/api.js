@@ -1,17 +1,15 @@
 const URL = '';
 
-const sendToAWS = async (phoneNumber, countryCode) => {
+const saveInDb = async (phoneNumber, countryCode) => {
   try {
-    const consent = {
-      uuid: Date.now().toString(),
-      channelType: 'SMS',
-      channelValue: phoneNumber,
+    const userData = {
+      phoneNumber,
       countryCode,
     };
 
     const request = await fetch(URL, {
       method: 'POST',
-      body: JSON.stringify(consent),
+      body: JSON.stringify(userData),
     });
 
     console.log(request.status, request);
@@ -25,5 +23,5 @@ document.getElementById('consent-form').addEventListener('submit', (e) => {
   const phoneNumber = document.querySelector('[name=phoneNumber]').value;
   const countryCode = document.querySelector('[name=countryCode]').value;
 
-  sendToAWS(phoneNumber, countryCode);
+  saveInDb(phoneNumber, countryCode);
 });
