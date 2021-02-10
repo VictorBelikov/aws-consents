@@ -167,7 +167,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/lambda/dev/1612954707947-2021-02-10T10:58:27.947Z/saveInDb.zip"
+          "S3Key": "serverless/lambda/dev/1613047735385-2021-02-11T12:48:55.385Z/saveInDb.zip"
         },
         "Handler": "handler.saveInDb",
         "Runtime": "nodejs12.x",
@@ -192,7 +192,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/lambda/dev/1612954707947-2021-02-10T10:58:27.947Z/notifyUser.zip"
+          "S3Key": "serverless/lambda/dev/1613047735385-2021-02-11T12:48:55.385Z/notifyUser.zip"
         },
         "Handler": "handler.notifyUser",
         "Runtime": "nodejs12.x",
@@ -210,24 +210,24 @@
         "NotifyUserLogGroup"
       ]
     },
-    "SaveInDbLambdaVersionWjZSd77oRFMzLaxFAJPRk7WhnU3Q5hsxOnwV06Rn3U": {
+    "SaveInDbLambdaVersionIfjwSwvVfwZzx3RdXZUbScfONowaFhZWHL6DBqN6es": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "SaveInDbLambdaFunction"
         },
-        "CodeSha256": "562nkE8aCQgOVX2pnQZV5j8NibicZBQmAd+39c7L7M4="
+        "CodeSha256": "/BJ3iJ9ykWGHthCny26glCdltwcnkMdUX8wp2FU+wQQ="
       }
     },
-    "NotifyUserLambdaVersionkY09Ffssbyc9zoOBky1KVWYabCpDRuGTurHWmgzm4": {
+    "NotifyUserLambdaVersionpJXcvR3PenvszPXxQekyIP0r4Tkc3sauvxetL6r8": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "NotifyUserLambdaFunction"
         },
-        "CodeSha256": "562nkE8aCQgOVX2pnQZV5j8NibicZBQmAd+39c7L7M4="
+        "CodeSha256": "/BJ3iJ9ykWGHthCny26glCdltwcnkMdUX8wp2FU+wQQ="
       }
     },
     "HttpApi": {
@@ -410,13 +410,13 @@
     "SaveInDbLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "SaveInDbLambdaVersionWjZSd77oRFMzLaxFAJPRk7WhnU3Q5hsxOnwV06Rn3U"
+        "Ref": "SaveInDbLambdaVersionIfjwSwvVfwZzx3RdXZUbScfONowaFhZWHL6DBqN6es"
       }
     },
     "NotifyUserLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "NotifyUserLambdaVersionkY09Ffssbyc9zoOBky1KVWYabCpDRuGTurHWmgzm4"
+        "Ref": "NotifyUserLambdaVersionpJXcvR3PenvszPXxQekyIP0r4Tkc3sauvxetL6r8"
       }
     },
     "HttpApiId": {
