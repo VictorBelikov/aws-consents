@@ -77,6 +77,12 @@
         "LogGroupName": "/aws/lambda/lambda-dev-saveInDb"
       }
     },
+    "NotifyUserLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/lambda-dev-notifyUser"
+      }
+    },
     "IamRoleLambdaExecution": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -161,7 +167,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/lambda/dev/1612795831514-2021-02-08T14:50:31.514Z/saveInDb.zip"
+          "S3Key": "serverless/lambda/dev/1612954707947-2021-02-10T10:58:27.947Z/saveInDb.zip"
         },
         "Handler": "handler.saveInDb",
         "Runtime": "nodejs12.x",
@@ -179,14 +185,49 @@
         "SaveInDbLogGroup"
       ]
     },
-    "SaveInDbLambdaVersionqQnqQOyrx53vic4f3fepNsSwbTssgvlCoDVeTLwBAs": {
+    "NotifyUserLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/lambda/dev/1612954707947-2021-02-10T10:58:27.947Z/notifyUser.zip"
+        },
+        "Handler": "handler.notifyUser",
+        "Runtime": "nodejs12.x",
+        "FunctionName": "lambda-dev-notifyUser",
+        "MemorySize": 1024,
+        "Timeout": 6,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "NotifyUserLogGroup"
+      ]
+    },
+    "SaveInDbLambdaVersionWjZSd77oRFMzLaxFAJPRk7WhnU3Q5hsxOnwV06Rn3U": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "SaveInDbLambdaFunction"
         },
-        "CodeSha256": "ns/gQbekCBuRCLxpsqHDdrhVlXnuGQe++tHOeninkDQ="
+        "CodeSha256": "562nkE8aCQgOVX2pnQZV5j8NibicZBQmAd+39c7L7M4="
+      }
+    },
+    "NotifyUserLambdaVersionkY09Ffssbyc9zoOBky1KVWYabCpDRuGTurHWmgzm4": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "NotifyUserLambdaFunction"
+        },
+        "CodeSha256": "562nkE8aCQgOVX2pnQZV5j8NibicZBQmAd+39c7L7M4="
       }
     },
     "HttpApi": {
@@ -283,6 +324,81 @@
         }
       },
       "DependsOn": "HttpApiIntegrationSaveInDb"
+    },
+    "NotifyUserLambdaPermissionHttpApi": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "NotifyUserLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "HttpApi"
+              },
+              "/*"
+            ]
+          ]
+        }
+      }
+    },
+    "HttpApiIntegrationNotifyUser": {
+      "Type": "AWS::ApiGatewayV2::Integration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": {
+          "Fn::GetAtt": [
+            "NotifyUserLambdaFunction",
+            "Arn"
+          ]
+        },
+        "PayloadFormatVersion": "2.0",
+        "TimeoutInMillis": 6500
+      }
+    },
+    "HttpApiRouteGetNotify": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "RouteKey": "GET /notify",
+        "Target": {
+          "Fn::Join": [
+            "/",
+            [
+              "integrations",
+              {
+                "Ref": "HttpApiIntegrationNotifyUser"
+              }
+            ]
+          ]
+        }
+      },
+      "DependsOn": "HttpApiIntegrationNotifyUser"
     }
   },
   "Outputs": {
@@ -294,7 +410,13 @@
     "SaveInDbLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "SaveInDbLambdaVersionqQnqQOyrx53vic4f3fepNsSwbTssgvlCoDVeTLwBAs"
+        "Ref": "SaveInDbLambdaVersionWjZSd77oRFMzLaxFAJPRk7WhnU3Q5hsxOnwV06Rn3U"
+      }
+    },
+    "NotifyUserLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "NotifyUserLambdaVersionkY09Ffssbyc9zoOBky1KVWYabCpDRuGTurHWmgzm4"
       }
     },
     "HttpApiId": {

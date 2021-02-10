@@ -1,4 +1,4 @@
-const URL = '';
+const URL = 'https://3p81tg0vh6.execute-api.us-east-1.amazonaws.com/';
 
 const saveInDb = async (phoneNumber, countryCode) => {
   try {

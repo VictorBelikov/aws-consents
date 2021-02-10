@@ -19,6 +19,12 @@ functions:
       - httpApi:
           path: /
           method: post
+  notifyUser:
+    handler: handler.notifyUser
+    events:
+      - httpApi:
+          path: /notify
+          method: get
 
 
 #    The following are a few example events you can configure
